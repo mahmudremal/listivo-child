@@ -1,0 +1,14 @@
+.git
+.gitignore
+languages
+.vscode
+assets/node_modules
+assets/build
+.babelrc
+.eslintignore
+.eslintrc.json
+.nvmrc
+.stylelintrc.json
+package-lock.json
+package.json
+webpack.config.js
