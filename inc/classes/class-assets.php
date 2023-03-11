@@ -57,6 +57,7 @@ class Assets {
 		// Register scripts.
 		// wp_register_script( 'slick-js', FWPLISTIVO_BUILD_LIB_URI . '/js/slick.min.js', ['jquery'], false, true );
 		wp_register_script( 'listivo-child', FWPLISTIVO_BUILD_JS_URI . '/main.js', ['jquery'], $this->filemtime( FWPLISTIVO_BUILD_JS_DIR_PATH . '/main.js' ), true );
+		wp_register_script( 'listivo-create', FWPLISTIVO_BUILD_JS_URI . '/create.js', ['jquery'], $this->filemtime( FWPLISTIVO_BUILD_JS_DIR_PATH . '/create.js' ), true );
 		// wp_register_script( 'single-js', FWPLISTIVO_BUILD_JS_URI . '/single.js', ['jquery', 'slick-js'], $this->filemtime( FWPLISTIVO_BUILD_JS_DIR_PATH . '/single.js' ), true );
 		// wp_register_script( 'author-js', FWPLISTIVO_BUILD_JS_URI . '/author.js', ['jquery'], $this->filemtime( FWPLISTIVO_BUILD_JS_DIR_PATH . '/author.js' ), true );
 		// wp_register_script( 'bootstrap-js', FWPLISTIVO_BUILD_LIB_URI . '/js/bootstrap.min.js', ['jquery'], false, true );
@@ -75,11 +76,46 @@ class Assets {
 		// if ( is_author() ) {
 		// 	wp_enqueue_script( 'author-js' );
 		// }
-
-		wp_localize_script( 'listivo-child', 'siteConfig', [
+		$siteConfig = [
 			'ajaxUrl'    => admin_url( 'admin-ajax.php' ),
 			'ajax_nonce' => wp_create_nonce( 'loadmore_post_nonce' ),
-		] );
+			// 'ss'				=> substr( str_replace( [ '/' ], [ '' ], $_SERVER[ 'REQUEST_URI' ] ), 0, 11 ),
+			'i18n'			=> [
+				'everything_else'			=> __( 'Everything else', 'domain' ),
+				'urnowpostingin'			=> __( 'You are now posting in', 'domain' ),
+				'whtrulistoday'				=> __( 'What are you listing today?', 'domain' ),
+				'slctcatulikeblw'			=> __( 'Select the category you would like to post to below.', 'domain' ),
+			]
+		];
+		
+		if( substr( str_replace( [ '/' ], [ '' ], $_SERVER[ 'REQUEST_URI' ] ), 0, 11 ) == "panelcreate" ) {
+			wp_enqueue_script( 'listivo-create' );
+			// array_reverse(  )
+			$term_ids = [ 465, 645, 615, 623 ];
+			$taxonomy = 'listivo_14';
+			$siteConfig[ 'cats' ] = $terms = get_terms( [
+				'taxonomy' => $taxonomy,
+				'include' => $term_ids,
+				
+				'hide_empty'    => false,
+				'hierarchical'  => false,
+				'parent'        => 0,
+			] );
+
+			foreach( $siteConfig[ 'cats' ] as $i => $term ) {
+				if( in_array( $term->term_id, [ 465 ] ) ) { // , 645, 615, 623
+					$siteConfig[ 'cats' ][ $i ]->subcats = get_terms( [
+						'taxonomy' => $taxonomy,
+						'hide_empty'    => false,
+						'hierarchical'  => false,
+						'parent'        => $term->term_id,
+					] );
+				}
+			}
+		}
+
+
+		wp_localize_script( 'listivo-child', 'siteConfig', $siteConfig );
 	}
 
 	/**

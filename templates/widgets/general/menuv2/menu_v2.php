@@ -1216,7 +1216,9 @@ $lstSimpleMenu = tdf_settings()->showMenuAccount();
 
                                     <span>
 
-                                        <?php echo esc_html(tdf_string('add_listing')); ?>
+                                        <?php // echo esc_html(tdf_string('add_listing')); ?>
+                                        <?php echo esc_html( __( 'Post Ad Free', 'listivo' ) ); ?>
+                                        
                                         <?php if ($lstCurrentWidget->hasCtaButtonIcon()) : ?>
 
                                             <i class="<?php echo esc_attr($lstCurrentWidget->getCtaButtonIcon()); ?>"></i>

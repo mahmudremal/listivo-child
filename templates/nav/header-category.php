@@ -4,24 +4,28 @@
  * @package FWPListivo.
  */
 // $get_categories = get_categories( [] );
-$categories = get_terms( [
-  'taxonomy'    => 'listivo_14',
-  'hide_empty'  => false,
-  // 'orderby'     => 'term_id',
-  // 'object_ids'   => [],
-  'parent'      => 0
-  // listivo_14 listivo_listing
-  //'child_of' => 17 // to target not only direct children
-] );
+$args = [
+  'taxonomy'      => 'listivo_14',
+  'orderby'       => 'meta_value_num',
+  'order'         => 'ASC',
+  'hide_empty'    => false,
+  'hierarchical'  => false,
+  'parent'        => 0,
+  'meta_query'    => [[
+    'key'         => 'fwplistivo_addtomega',
+    'type'        => 'NUMERIC',
+  ]],
+];
+$categories = get_terms( $args );
 // print_r( $categories );
 // get_category_link( $category->term_id )
-$more = '';
+$more = '';$totalColumn = 6;
 ?>
 <div class="categoryLiquid">
   <ul class="category-bar">
     <?php foreach( $categories as $i => $category ) :
       $childrens = [];$isMega = false;$megaMenus = '';
-      if( $i <= 7 ) {
+      if( $i <= ( $totalColumn - 1 ) ) {
         $childrens = get_terms( [
           'taxonomy'    => 'listivo_14',
           'hide_empty'  => false,
@@ -57,7 +61,7 @@ $more = '';
         </a>
         ' . ( $hasMegaMenus ? $hasMegaMenus : '' ) . '
       </li>';
-      if( $i <= 7 ):echo $html;else:$more .= $html;endif;
+      if( $i <= ( $totalColumn - 1 ) ):echo $html;else:$more .= $html;endif;
     endforeach;
     if( ! empty( $more ) ) : ?>
     <li class="more category-top">

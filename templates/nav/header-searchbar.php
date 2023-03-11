@@ -26,7 +26,9 @@ $locationPickerDropdown = false;
         <!-- <span class="bar-title">What are you looking for?</span>
         <span class="bar-act"></span> -->
         <button aria-label="search" class="search-mobile-btn">
-          <span class="fticon-header-search-light"></span>
+          <span class="fticon-header-search-light">
+            <svg alt="Search" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" style="transform: scale(1);"><path d="M16.32 14.9l5.39 5.4a1 1 0 0 1-1.42 1.4l-5.38-5.38a8 8 0 1 1 1.41-1.41zM10 16a6 6 0 1 0 0-12 6 6 0 0 0 0 12z"></path></svg>
+          </span>
         </button>
       </div>
       <form id="fwp-listivo-nav-search" action="<?php echo esc_url( site_url( '/ads/' ) ); ?>" data-action="<?php echo esc_url( site_url( '/ads/' ) ); ?>" class="has-location-true" data-instant-search="undefined" data-clear-searches-message="<?php esc_attr_e( 'Clear Recent Searches', 'domain' ); ?>" data-saved-search="true" data-auto-complete="true" data-auto-complete-api="<?php echo esc_attr( site_url( '/wp-json/autocomplete/model/en_ZA/{catId}/{locId}/{value}' ) ); ?>">
@@ -161,7 +163,9 @@ $locationPickerDropdown = false;
             </div>
             <div class="button">
               <button aria-label="search" class="submit-btn">
-                <span class="fticon-header-search-light"></span>
+                <span class="fticon-header-search-light">
+                  <svg alt="Search" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" style="transform:scale(1)"><path d="M16.32 14.9l5.39 5.4a1 1 0 0 1-1.42 1.4l-5.38-5.38a8 8 0 1 1 1.41-1.41zM10 16a6 6 0 1 0 0-12 6 6 0 0 0 0 12z"></path></svg>
+                </span>
               </button>
             </div>
             <input type="hidden" name="dominantCategoryDisabled" value="" disabled="">
@@ -171,14 +175,27 @@ $locationPickerDropdown = false;
     </section>
   </div>
 </div>
-<script>
-  window.onload = function() {
-    document.querySelector( '[name="keyword"]' ).value = document.querySelector( '[name="keyword"]' ).placeholder;
-    document.querySelector( '[name="keyword"]:not([data-handled])' ).addEventListener( 'focus', function( e ) {
-      if( ! this.dataset.handled ) {this.placeholder = '';this.value = '';this.dataset.handled = true;}
+
+<?php
+add_action( 'wp_footer', function() {
+  ?>
+  <script type="text/javascript">
+  ( function () {
+    var input = document.querySelector( '[name="keyword"]' );
+    input.setAttribute( 'value', input.placeholder );input.placeholder = '';
+    input.addEventListener( 'focus', function( e ) {
+      if( ! this.dataset.handled ) {
+        // console.log( 'Input cleared', this );
+        this.dataset.handled = true;
+        this.placeholder = '';this.setAttribute( 'placeholder', '' );
+        this.value = '';this.setAttribute( 'value', '' );
+      }
     } );
-  }
-</script>
+  } )();
+  </script>
+  <?php
+}, 20, 0 );
+?>
 
 <?php if( $locationPickerDropdown ) : ?>
 <script>
