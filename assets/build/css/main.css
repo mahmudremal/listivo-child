@@ -4240,3 +4240,11 @@ ul.listivo-psf-body-subcategories > li:hover {
 .listivo-panel-section__form.listivo-panel-form.stickey {display: grid;}
 .listivo-panel-section__form.listivo-panel-form.stickey .listivo-panel-section__form-tabs-wrap {order: -1;height: unset;position: relative;background: none;margin-bottom: 50px;}
 .listivo-panel-section__form-tabs-wrap.is-in-select ~ div, .is-in-selecting .listivo-select-v2__dropdown {display: none;}
+
+.elementor-5815 .elementor-element.elementor-element-e9b15b2 .listivo-menu-v2__account-link {display: none;}
+.elementor-5815 .elementor-element.elementor-element-e9b15b2 .listivo-menu-v2__avatar {margin-right: auto;}
+@media (max-width: 320px) {
+  .listivo-menu-v2__right {
+    display: none !important;
+  }
+}
